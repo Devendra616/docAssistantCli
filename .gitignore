@@ -1,0 +1,4 @@
+node_modules/
+scraped_docs/
+vector_store/
+.env

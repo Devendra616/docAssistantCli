@@ -1,0 +1,19 @@
+{
+  "name": "6.docs-cli",
+  "version": "1.0.0",
+  "description": "cli tool for RAG on docs.chaiaurcode",
+  "keywords": [
+    "RAG"
+  ],
+  "license": "ISC",
+  "author": "Devendra Singh",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cheerio": "^1.0.0"
+  }
+}
