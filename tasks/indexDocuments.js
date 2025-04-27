@@ -1,14 +1,9 @@
 // loading, splitting, embedding and storing of documents
 import { promises as fs } from "fs";
-import {
-  SCRAPE_DATA_DIR,
-  VECTOR_STORE_DIR,
-  OPENAI_API_KEY,
-} from "../config/constants";
+import { SCRAPE_DATA_DIR } from "../config/constants";
 import path from "path";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { OpenAIEmbeddings } from "@langchain/openai";
-import { QdrantVectorStore } from "@langchain/qdrant";
+import { loadVectorStore } from "./loadVectorStore.js";
 
 // returns array of files contents as documents
 export async function loadDocuments() {
@@ -48,16 +43,6 @@ export async function splitDocuments(documents) {
 }
 
 export async function embedAndStore(documents) {
-  const embeddings = new OpenAIEmbeddings({
-    openAIApiKey: OPENAI_API_KEY,
-    model: "text-embedding-3-small",
-  });
-  const vectorStore = await QdrantVectorStore.fromExistingCollection(
-    embeddings,
-    {
-      url: process.env.QDRANT_URL,
-      collectionName: "chaiCodeDocs",
-    }
-  );
+  const vectorStore = await loadVectorStore();
   return await vectorStore.addDocuments(documents);
 }
