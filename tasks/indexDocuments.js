@@ -3,7 +3,7 @@ import { promises as fs } from "fs";
 import { SCRAPE_DATA_DIR } from "../config/constants";
 import path from "path";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { loadVectorStore } from "./loadVectorStore.js";
+import { getVectorStore } from "./loadVectorStore.js";
 
 // returns array of files contents as documents
 export async function loadDocuments() {
@@ -43,6 +43,6 @@ export async function splitDocuments(documents) {
 }
 
 export async function embedAndStore(documents) {
-  const vectorStore = await loadVectorStore();
+  const vectorStore = await getVectorStore();
   return await vectorStore.addDocuments(documents);
 }

@@ -3,7 +3,7 @@ import { pull } from "langchain/hub";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { ChatOpenAI } from "@langchain/openai";
 import { OPENAI_API_KEY } from "../config/constants.js";
-import { loadVectorStore } from "./loadVectorStore.js";
+import { getVectorStore } from "./loadVectorStore.js";
 import { formatDocumentsAsString } from "langchain/util/document";
 import {
   RunnableSequence,
@@ -14,7 +14,7 @@ import { StringOutputParser } from "@langchain/core/output_parsers";
 
 // Retrieve and generate using the relevant snippets of the blog.
 export async function setupRetrievalQA() {
-  const vectorStore = await loadVectorStore();
+  const vectorStore = await getVectorStore();
   const retriever = vectorStore.asRetriever();
   const llm = new ChatOpenAI({
     openAIApiKey: OPENAI_API_KEY,
