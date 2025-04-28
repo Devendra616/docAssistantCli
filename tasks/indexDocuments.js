@@ -1,6 +1,6 @@
 // loading, splitting, embedding and storing of documents
 import { promises as fs } from "fs";
-import { SCRAPE_DATA_DIR } from "../config/constants";
+import { SCRAPE_DATA_DIR } from "../config/constants.js";
 import path from "path";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { getVectorStore } from "./loadVectorStore.js";
@@ -15,7 +15,7 @@ export async function loadDocuments() {
       const content = await fs.readFile(filePath, "utf-8");
       documents.push({
         pageContent: content,
-        metaData: {
+        metadata: {
           source: filePath,
         },
       });
@@ -27,19 +27,24 @@ export async function loadDocuments() {
 }
 
 // split each document into chucks
-export async function splitDocuments(documents) {
+export async function getSplitedDocs(documents) {
   const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 500,
-    chunkOverlap: 100,
+    chunkSize: 1000,
+    chunkOverlap: 150,
   });
-  const splitDocs = [];
+  const splittedDocs = [];
   for (const doc of documents) {
+    const docText = JSON.parse(doc.pageContent);
+    // docText: {source:'',content:''}
     const chunks = await splitter.splitDocuments([
-      { pageContent: doc.pageContent, metadata: doc.metadata },
+      {
+        pageContent: docText.content,
+        metadata: { source: docText.source, loc: doc.metadata.source },
+      },
     ]);
-    splitDocs.push(...chunks);
+    splittedDocs.push(...chunks);
   }
-  return splitDocs;
+  return splittedDocs;
 }
 
 export async function embedAndStore(documents) {
