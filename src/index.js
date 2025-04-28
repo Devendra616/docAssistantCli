@@ -51,7 +51,6 @@ async function main() {
         spinner.fail("❌ Scraping failed.");
         console.error(error);
       }
-      return;
     } else if (action === "index") {
       const spinner = ora("🔢 Indexing documents...").start();
       // console.log(chalk.blue(" Indexing documents..."));
@@ -64,7 +63,6 @@ async function main() {
         spinner.fail("❌ Indexing failed.");
         console.error(error);
       }
-      return;
     } else if (action === "ask") {
       const { userQuestion } = await inquirer.prompt([
         {
